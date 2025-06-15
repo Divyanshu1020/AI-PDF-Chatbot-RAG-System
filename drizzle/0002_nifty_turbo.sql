@@ -1,0 +1,1 @@
+ALTER TABLE "chats" ADD COLUMN "pdf_path" text NOT NULL;

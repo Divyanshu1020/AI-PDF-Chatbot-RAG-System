@@ -1,0 +1,17 @@
+# Files to exclude from AI analysis
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.p8
+*.p7b
+*.p7c
+*.p12
+*.pfx
+*.pem
+*.crt
+*.cert
+*.cer

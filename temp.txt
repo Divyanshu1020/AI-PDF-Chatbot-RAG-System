@@ -1,0 +1,60 @@
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import { PineconeStore } from "@langchain/pinecone";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { Pinecone } from "@pinecone-database/pinecone";
+
+// Initialize text splitter
+const textSplitter = new RecursiveCharacterTextSplitter({
+  chunkSize: 1000,
+  chunkOverlap: 200,
+});
+
+// Split documents
+const splitDocs = await textSplitter.splitDocuments(documents);
+
+// Initialize Pinecone
+const pinecone = new Pinecone({
+  apiKey: process.env.PINECONE_API_KEY,
+});
+
+const pineconeIndex = pinecone.Index("your-index-name");
+
+// Create embeddings and store in Pinecone
+const embeddings = new OpenAIEmbeddings();
+const vectorStore = await PineconeStore.fromDocuments(
+  splitDocs,
+  embeddings,
+  {
+    pineconeIndex,
+  }
+);
+
+8888888888888888888
+ ✓ Compiled /api/upload in 2.3s (987 modules)
+splitDocs [
+  [
+    Document {
+      pageContent: 'Divyanshu Vishwakarma  +91 8435403543 | Linkedin | Github | divyanshuvishwakarma222@gmail.com    EDUCATION    Technocrats Institute of Technology Bhopal, M.P  Bachelor of Technology in Computer Science  July 2020 – May 2024    EXPERIENCE    Full-Stack Developer (Internship) Nov 2024 – Jan 2025  The RD Group Of Industries Remote  ● Contributed to an ongoing project built using Next.js, PostgreSQL, and Prisma.  ● Designed and developed new features, including:  ○ Admin Control for Top Ten List: Enabled the admin to reorder items, update images, and dynamically  manage the homepage.  ○ Search Result Management: Provided functionality for the admin to control website search results  through the admin panel.  Full-Stack Developer Aug 2024 – Present  Freelance Remote  ● Developed scalable and high-performance web applications using React.js (with Redux and  Hooks) and Node.js (Express.js) with MongoDB and PostgreSQL databases.  ● Built responsive and cross-browser compatible portfolio',
+      metadata: [Object],
+      id: undefined
+    },
+    Document {
+      pageContent: 'and high-performance web applications using React.js (with Redux and  Hooks) and Node.js (Express.js) with MongoDB and PostgreSQL databases.  ● Built responsive and cross-browser compatible portfolio websites for multiple clients to enhance  their online presence.  ● Created RESTful APIs and implemented authentication/authorization using JWT and OAuth  standards.  PROJECTS    Real-Time Chat Application | Live | Github    React, node.js, express, socket io, mongoDB  ● Built a real-time group chat system using React.js frontend and Node.js + Express.js backend, with  MongoDB for database and Socket.io for real-time communication.  ● Developed a real-time chat application with features such.as notifications, group chat (add/delete) and  support for sending photos and files.  ● Integrated Socket.io for efficient real-time communication.  ● Attempted  to implement one-to-one video calling using WebSockets, with plans to fix the current issues  in the future.  Dev Magic: Summon the Spell of',
+      metadata: [Object],
+      id: undefined
+    },
+    Document {
+      pageContent: 'for efficient real-time communication.  ● Attempted  to implement one-to-one video calling using WebSockets, with plans to fix the current issues  in the future.  Dev Magic: Summon the Spell of Creation | Live | Github    Node, typescript  ● Dev Magic is an arcane CLI spell that conjures the bones of your application—frontend and  backend—ready to harness the powers of React and Node.js. With a single incantation,   ● Automates React project setup using Vite, including integration of Tailwind CSS, Axios, Redux, and  React Router.   ● Implemented a seamless workflow that automatically generates necessary folders and configuration  files, saving developers time on repetitive tasks.    Technical Skills    Frontend: React.js, Next.js, Redux, React Query, Tailwind CSS, HTML5, CSS3  Backend: Node.js, Express.js, REST APIs, WebSockets, Authentication (JWT, OAuth, NextAuth)  Databases: MongoDB, PostgreSQL, Prisma  Cloud & DevOps: AWS, Docker, Git, Postman  Programming Languages: JavaScript',
+      metadata: [Object],
+      id: undefined
+    },
+    Document {
+      pageContent: 'Node.js, Express.js, REST APIs, WebSockets, Authentication (JWT, OAuth, NextAuth)  Databases: MongoDB, PostgreSQL, Prisma  Cloud & DevOps: AWS, Docker, Git, Postman  Programming Languages: JavaScript (ES6+), TypeScript,  Other Skills: REST APIs, WebSockets, Authentication (JWT, OAuth, nextAuth), Performance  Optimization', 
+      metadata: [Object],
+      id: undefined
+    }
+  ]
+]
+Split blog post into 1 sub-documents.
+Embedding documents...
+ POST /api/upload 200 in 2930ms
