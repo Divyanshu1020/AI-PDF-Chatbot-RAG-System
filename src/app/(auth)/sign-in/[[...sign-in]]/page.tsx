@@ -1,10 +1,6 @@
 import { SignIn } from "@clerk/nextjs";
 
-import React from "react";
-
-type Props = {};
-
-const Page = (props: Props) => {
+const Page = () => {
   return <div className="flex items-center justify-center h-screen">
   <SignIn />
 </div>;

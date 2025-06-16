@@ -38,11 +38,9 @@ export default  function Chat() {
   const [chatSessionMessages, setChatSessionMessages] = useState<MESSAGES_TYPE[]>([])
 
 
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [pdfUrl, setPdfUrl] = useState<string | null>(null)
 
   const handleFileUpload = (file: File) => {
-    setUploadedFile(file)
     const url = URL.createObjectURL(file)
     setPdfUrl(url)
 
@@ -68,7 +66,6 @@ export default  function Chat() {
   const handleNewChat = () => {
     
     setCurrentSession(null)
-    setUploadedFile(null)
     setPdfUrl(null)
   }
 

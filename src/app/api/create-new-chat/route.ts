@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
         vectorStore,
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("API Error:", error);
 
     const errorMessage =

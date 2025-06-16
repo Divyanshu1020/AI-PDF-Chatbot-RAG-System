@@ -123,7 +123,7 @@ export function HeroSection() {
                   <div className="space-y-3">
                     <div className="bg-blue-50 p-3 rounded-lg text-left">
                       <div className="text-sm text-gray-700">
-                        "What are the main findings in this research paper?"
+                        &quot;What are the main findings in this research paper?&quot;
                       </div>
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg text-left">

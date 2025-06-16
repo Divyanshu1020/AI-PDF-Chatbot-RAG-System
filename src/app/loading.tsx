@@ -1,12 +1,15 @@
- import Loader from "@/components/global/loader";
+"use client"
+import Loader from "@/components/global/loader";
 import React from "react";
 
-type Props = {};
+interface Props {
+    state: boolean
+}
 
-const Loading = (props: Props) => {
+const Loading = ({state=false}: Props) => {
   return (
     <div className="h-screen flex justify-center items-center">
-      <Loader state>...Loading</Loader>
+      <Loader state={state}>...Loading</Loader>
     </div>
   );
 };

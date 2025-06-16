@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { useDropzone } from "react-dropzone"
+import { FileRejection, useDropzone } from "react-dropzone"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -71,7 +71,7 @@ export default function PDFUploadComponent() {
   }, [])
 
   const onDrop = useCallback(
-    async (acceptedFiles: File[], rejectedFiles: any[]) => {
+    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       // Check if upload is disabled (file already exists)
       if (uploadedFile) {
         setUploadStatus({
@@ -83,8 +83,10 @@ export default function PDFUploadComponent() {
       }
 
       // Handle rejected files
-      if (rejectedFiles.length > 0) {
-        const errors = rejectedFiles.map(({ errors }) => errors.map((e: any) => e.message).join(", ")).join("; ")
+      if (fileRejections.length > 0) {
+        const errors = fileRejections
+        .map(rejection => `${rejection.file.name}: ${rejection.errors.map(e => e.message).join(', ')}`)
+        .join(", ")
 
         setUploadStatus({
           status: "error",
