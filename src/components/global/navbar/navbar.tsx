@@ -6,12 +6,15 @@ import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import {  Github, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isSignedIn, isLoaded } = useUser();
+
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,9 +41,9 @@ export function Navbar() {
             className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center cursor-pointer gap-2">
               <span className="text-xl font-bold">Doc-Chat AI</span>
-            </div>
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -82,9 +85,11 @@ export function Navbar() {
                     </Button>
                     <ModeToggle />
 
-                    <Button variant="outline" asChild>
-                      <Link href="/dashboard">Dashboard</Link>
-                    </Button>
+                    {!pathname.startsWith("/dashboard") && (
+            <Button variant="outline" asChild>
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+          )}
                     <UserButton
                       appearance={{
                         elements: {

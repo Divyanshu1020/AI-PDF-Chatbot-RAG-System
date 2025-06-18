@@ -39,7 +39,7 @@ export function PdfViewer({ pdfUrl, fileName }: PdfViewerProps) {
       <div className="flex-1 overflow-hidden ">
         <iframe
           src={pdfUrl}
-          className="w-full h-full dark:bg-accent/30"
+          className="w-full h-full dark:bg-background"
           title={fileName}
           
         ></iframe>

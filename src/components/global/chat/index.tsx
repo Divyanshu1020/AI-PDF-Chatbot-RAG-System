@@ -139,7 +139,7 @@ export default  function Chat() {
   }, [messages, messagesPending])
 
   return (
-    <div className="flex h-screen  ">
+    <div className="flex h-[calc(100vh-64px)] mt-[64px] border-t  ">
       {/* Left Panel - Chat History */}
       <div className="w-80 border-r flex flex-col">
         <ChatHistory
