@@ -21,26 +21,27 @@ export function PdfViewer({ pdfUrl, fileName }: PdfViewerProps) {
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-700">
         <div className="flex items-center space-x-2">
-          <FileText className="w-5 h-5 text-red-400" />
-          <span className="text-sm font-medium text-white truncate">{fileName}</span>
+          <FileText className="w-5 h-5 dark:text-primary" />
+          <span className="text-sm font-medium  truncate">{fileName}</span>
         </div>
 
         <Button
           variant="ghost"
           size="sm"
           onClick={handleDownload}
-          className="text-gray-400 hover:text-white"
+          className="dark:text-primary hover:text-white"
         >
           <Download className="w-4 h-4" />
         </Button>
       </div>
 
       {/* PDF Iframe */}
-      <div className="flex-1 overflow-hidden bg-gray-800">
+      <div className="flex-1 overflow-hidden ">
         <iframe
           src={pdfUrl}
-          className="w-full h-full"
+          className="w-full h-full dark:bg-accent/30"
           title={fileName}
+          
         ></iframe>
       </div>
     </div>

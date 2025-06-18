@@ -9,7 +9,7 @@ import HowItWorksSection from "@/components/global/landing/how-it-works-section"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <main className="min-h-screen relative ">
       <Navbar />
       <HeroSection />
       <FeaturesSection />
@@ -17,6 +17,7 @@ export default function Home() {
       <TechStackSection />
       <CTASection />
       <Footer />
+      
     </main>
   );
 }

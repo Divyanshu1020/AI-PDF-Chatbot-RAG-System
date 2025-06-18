@@ -29,9 +29,9 @@ export function ChatHistory({
 
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-gray-700">
-        <Button onClick={onNewChat} className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white">
+    <div className="flex flex-col h-full  ">
+      <div className="p-4 border-b  ">
+        <Button onClick={onNewChat} className="w-full     border  ">
           <Plus className="w-4 h-4 mr-2" />
           New Chat
         </Button>
@@ -52,12 +52,12 @@ export function ChatHistory({
             key={i}
             className={`w-full text-left p-3 rounded-lg border transition-colors
               
-                "bg-gray-700 border-gray-600
+                 
                   hover:bg-gray-750"
             `}
           >
             <div className="flex items-start space-x-3">
-              <MessageSquare className="w-4 h-4 mt-1 text-gray-400 flex-shrink-0" />
+              <MessageSquare className="w-4 h-4 mt-1  flex-shrink-0" />
               <div className="flex-1 min-w-0">
               <div  className="space-y-1 ">
               <Skeleton className="h-4 w-3/4 rounded" />
@@ -70,9 +70,9 @@ export function ChatHistory({
           </div>
         ) : sessions.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40 text-center px-4">
-            <MessageSquare className="h-8 w-8 text-gray-500 mb-2" />
-            <p className="text-sm text-gray-400">No chat history yet</p>
-            <p className="text-xs text-gray-500 mt-1">Start a new chat to see it here</p>
+            <MessageSquare className="h-8 w-8  mb-2" />
+            <p className="text-sm ">No chat history yet</p>
+            <p className="text-xs mt-1">Start a new chat to see it here</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -82,15 +82,15 @@ export function ChatHistory({
                 onClick={() => onSelectChat(session)}
                 className={`w-full text-left p-3 rounded-lg border transition-colors ${
                   currentSession?.id === session.id
-                    ? "bg-gray-700 border-gray-600"
-                    : "bg-gray-800 border-gray-700 hover:bg-gray-750"
+                    ? " bg-accent  hover:bg-accent/90"
+                    : "bg-accent/30  hover:bg-accent/50"
                 }`}
               >
                 <div className="flex items-start space-x-3">
-                  <MessageSquare className="w-4 h-4 mt-1 text-gray-400 flex-shrink-0" />
+                  <MessageSquare className="w-4 h-4 mt-1 text-muted-foreground  flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{session.pdfName}</p>
-                    <p className="text-xs text-gray-400 mt-1">{format(new Date(session.createdAt), 'PPpp')}</p>
+                    <p className="text-sm font-medium  text-primary truncate">{session.pdfName}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{format(new Date(session.createdAt), 'PPpp')}</p>
                   </div>
                 </div>
               </button>

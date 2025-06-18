@@ -54,10 +54,10 @@ export function ChatInterface({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b border-gray-700">
+      <div className="p-4 border-b ">
         <div className="flex items-center space-x-2">
-          <Bot className="w-5 h-5 text-blue-400" />
-          <span className="font-medium text-white">AI Chat</span>
+          <Bot className="w-5 h-5 dark:text-primary" />
+          <span className="font-medium ">AI Chat</span>
         </div>
       </div>
 
@@ -66,8 +66,8 @@ export function ChatInterface({
         {!hasDocument ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <Bot className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 text-sm">
+              <Bot className="w-12 h-12 dark:text-primary mx-auto mb-4" />
+              <p className="text-muted-foreground text-sm">
                 Upload a PDF document to start chatting
               </p>
             </div>
@@ -75,8 +75,8 @@ export function ChatInterface({
         ) : !currentSession ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <Bot className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 text-sm">
+              <Bot className="w-12 h-12 dark:text-primary mx-auto mb-4" />
+              <p className="text-muted-foreground text-sm">
                 Select a chat or start a new conversation
               </p>
             </div>
@@ -84,9 +84,9 @@ export function ChatInterface({
         ) : (chatSessionMessages.length) === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <Bot className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+              <Bot className="w-12 h-12 dark:text-primary mx-auto mb-4" />
               <p className="text-white font-medium mb-2">Ready to help!</p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Ask me anything about your PDF document
               </p>
             </div>
@@ -101,33 +101,33 @@ export function ChatInterface({
         }`}
       >
         {message.role === "system" && (
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
-            <Bot className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-full bg-accent/50 flex items-center justify-center flex-shrink-0">
+            <Bot className="w-4 h-4 dark:text-primary" />
           </div>
         )}
 
         <div
           className={`max-w-[80%] rounded-lg p-3 relative ${
             message.role === "user"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-700 text-white"
+              ? "bg-primary text-primary-foreground "
+              : "bg-accent/30 text-accent-foreground"
           } ${message.status === "pending" ? "animate-pulse" : ""}`}
         >
-          <p className="text-sm">{message.content}</p>
+          <p className={message.role === "user" ? "text-primary-foreground dark:text-white" : "text-accent-foreground dark:text-white"}>{message.content}</p>
           <p className="text-xs opacity-70 mt-1">
             { format(message.createdAt, "dd/MM/yy HH:mm:ss")}
           </p>
 
           {(message.role === "system" && message.status === "pending") && (
-            <span className="absolute top-1 right-2 text-xs text-white/70">
+            <span className="absolute top-1 right-2 text-xs ">
               thinking...
             </span>
           )}
         </div>
 
         {message.role === "user" && (
-          <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center flex-shrink-0">
-            <User className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-full bg-secondary-foreground flex items-center justify-center flex-shrink-0">
+            <User className="w-4 h-4 text-primary" />
           </div>
         )}
       </div>
@@ -138,7 +138,7 @@ export function ChatInterface({
       </ScrollArea>
 
       {/* Input */}
-      <div className="p-4 border-t border-gray-700">
+      <div className="p-4 border-t ">
         <form onSubmit={handleSubmit} className="flex space-x-2">
           <Input
             value={input}
@@ -149,14 +149,14 @@ export function ChatInterface({
                 : "Upload a PDF to start chatting"
             }
             disabled={!hasDocument}
-            className="flex-1 bg-gray-800 border-gray-600 text-white placeholder-gray-400"
+            className="flex-1 "
           />
           <Button
             type="submit"
             disabled={!input.trim() || !hasDocument}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700"
+            className="bg-accent hover:bg-accent/90 disabled:bg-gray-700 dark:bg-accent/50 dark:hover:bg-accent/60"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4 dark:text-primary" />
           </Button>
         </form>
       </div>

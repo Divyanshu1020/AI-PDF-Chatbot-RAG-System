@@ -175,7 +175,7 @@ export default function PDFUploadComponent({ onFileUpload }: PDFUploadProps) {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
+    <div className="w-full max-w-4xl mx-auto my-auto p-6 space-y-6 ">
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold">PDF File Upload</h2>
         <p className="text-muted-foreground">Drag and drop a PDF file or click to select from your device</p>

@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion' ;
-import { Button } from '@/components/ui/button';
-import { SignInButton, SignUpButton, UserButton, useUser } from '@clerk/nextjs';
-import { Menu, X, FileText } from 'lucide-react';
-import Link from 'next/link';
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/mode-toggle";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
+import { motion } from "framer-motion";
+import {  Github, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,74 +17,99 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20' 
-          : 'bg-transparent'
+      className={` fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? " backdrop-blur-md shadow-lg border-b border-white/20"
+          : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex  items-center h-16 gap-16">
           {/* Logo */}
-          <motion.div 
+          <motion.div
             className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-              <FileText className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold">Doc-Chat AI</span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              RAG AI
-            </span>
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="#features" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              href="#features"
+              className="transition-colors hover:text-primary"
+            >
               Features
             </Link>
-            <Link href="#how-it-works" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              href="#how-it-works"
+              className="transition-colors hover:text-primary"
+            >
               How it Works
             </Link>
-            <Link href="#tech-stack" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              href="#tech-stack"
+              className="transition-colors hover:text-primary"
+            >
               Technology
             </Link>
           </div>
 
           {/* Auth Section */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 ml-auto">
             {isLoaded && (
               <>
                 {isSignedIn ? (
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-1">
+                    <Button variant="ghost" asChild>
+                      <a
+                        href="https://github.com/Divyanshu1020/AI-PDF-Chatbot-RAG-System"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github />
+                      </a>
+                    </Button>
+                    <ModeToggle />
+
                     <Button variant="outline" asChild>
                       <Link href="/dashboard">Dashboard</Link>
                     </Button>
-                    <UserButton 
+                    <UserButton
                       appearance={{
                         elements: {
-                          avatarBox: "w-8 h-8"
-                        }
+                          avatarBox: "w-8 h-8",
+                        },
                       }}
                     />
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-1">
+                    <Button variant="ghost" asChild>
+                      <a
+                        href="https://github.com/Divyanshu1020/AI-PDF-Chatbot-RAG-System"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github />
+                      </a>
+                    </Button>
+                    <ModeToggle />
                     <SignInButton mode="modal">
                       <Button variant="ghost">Sign In</Button>
                     </SignInButton>
                     <SignUpButton mode="modal">
-                      <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                        Sign Up
-                      </Button>
+                      <Button className="">Sign Up</Button>
                     </SignUpButton>
                   </div>
                 )}
@@ -98,7 +124,11 @@ export function Navbar() {
               size="sm"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </Button>
           </div>
         </div>
@@ -112,28 +142,28 @@ export function Navbar() {
             className="md:hidden bg-white/95 backdrop-blur-md border-t border-white/20 py-4"
           >
             <div className="flex flex-col space-y-4">
-              <Link 
-                href="#features" 
+              <Link
+                href="#features"
                 className="text-gray-700 hover:text-blue-600 transition-colors px-4 py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Features
               </Link>
-              <Link 
-                href="#how-it-works" 
+              <Link
+                href="#how-it-works"
                 className="text-gray-700 hover:text-blue-600 transition-colors px-4 py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 How it Works
               </Link>
-              <Link 
-                href="#tech-stack" 
+              <Link
+                href="#tech-stack"
                 className="text-gray-700 hover:text-blue-600 transition-colors px-4 py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Technology
               </Link>
-              
+
               {isLoaded && (
                 <div className="border-t border-gray-200 pt-4 px-4">
                   {isSignedIn ? (
@@ -146,7 +176,9 @@ export function Navbar() {
                   ) : (
                     <div className="flex flex-col space-y-2">
                       <SignInButton mode="modal">
-                        <Button variant="outline" className="w-full">Sign In</Button>
+                        <Button variant="outline" className="w-full">
+                          Sign In
+                        </Button>
                       </SignInButton>
                       <SignUpButton mode="modal">
                         <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">

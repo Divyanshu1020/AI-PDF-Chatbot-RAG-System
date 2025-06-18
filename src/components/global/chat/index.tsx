@@ -139,9 +139,9 @@ export default  function Chat() {
   }, [messages, messagesPending])
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white">
+    <div className="flex h-screen  ">
       {/* Left Panel - Chat History */}
-      <div className="w-80 border-r border-gray-700 flex flex-col">
+      <div className="w-80 border-r flex flex-col">
         <ChatHistory
           sessions={chatSessions}
           chatSessionsIsPending={userChatsPending}
@@ -153,7 +153,7 @@ export default  function Chat() {
       </div>
 
       {/* Center Panel - PDF Viewer */}
-      <div className="flex-1 border-r border-gray-700 flex flex-col">
+      <div className="flex-1 border-r flex flex-col">
         {!currentSession ? (
           // <FileUpload onFileUpload={handleFileUpload} />
           <PDFUploadComponent onFileUpload={handleFileUpload} />

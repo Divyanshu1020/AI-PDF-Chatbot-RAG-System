@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { 
   Upload, 
   MessageSquare, 
@@ -76,13 +76,10 @@ export function FeaturesSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Powerful Features for{' '}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Document Intelligence
-            </span>
+          <h2 className="text-3xl sm:text-4xl font-bold  mb-4">
+            Powerful Features for Document Intelligence
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Experience the future of document interaction with our advanced AI-powered platform
           </p>
         </motion.div>
@@ -99,15 +96,15 @@ export function FeaturesSection() {
               whileHover={{ scale: 1.05 }}
               className="group"
             >
-              <Card className="h-full bg-white/70 backdrop-blur-sm border-white/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card className="h-full bg-muted backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6">
                   <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} p-3 mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className="w-6 h-6 text-white" />
+                    <feature.icon className="w-6 h-6 " />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-semibold text-primary mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </CardContent>
@@ -122,39 +119,41 @@ export function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="mt-20"
+          className="mt-6"
         >
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 lg:p-12 border border-blue-100">
-            <h3 className="text-2xl font-bold text-center text-gray-900 mb-12">
+          <Card className="h-full bg-muted backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-300">
+            <CardHeader className="">
+            <h3 className="text-2xl font-bold text-center mb-12">
               From Upload to Insights in Seconds
             </h3>
+            </CardHeader>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Upload className="w-8 h-8 text-white" />
+                  <Upload className="w-8 h-8 " />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">Upload Document</h4>
-                <p className="text-gray-600">Drop your PDF and watch as we process it instantly</p>
+                <h4 className="text-lg font-semibold text-primary mb-2">Upload Document</h4>
+                <p className="text-muted-foreground">Drop your PDF and watch as we process it instantly</p>
               </div>
               
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Brain className="w-8 h-8 text-white" />
+                  <Brain className="w-8 h-8 " />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">AI Processing</h4>
-                <p className="text-gray-600">Advanced AI analyzes and understands your content</p>
+                <h4 className="text-lg font-semibold text-primary mb-2">AI Processing</h4>
+                <p className="text-muted-foreground">Advanced AI analyzes and understands your content</p>
               </div>
               
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MessageSquare className="w-8 h-8 text-white" />
+                  <MessageSquare className="w-8 h-8 " />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">Start Chatting</h4>
-                <p className="text-gray-600">Ask questions and get intelligent answers instantly</p>
+                <h4 className="text-lg font-semibold text-primary mb-2">Start Chatting</h4>
+                <p className="text-muted-foreground">Ask questions and get intelligent answers instantly</p>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </motion.div>
       </div>
     </section>
