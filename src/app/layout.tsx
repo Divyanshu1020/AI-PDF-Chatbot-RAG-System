@@ -18,14 +18,15 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: 'DocChat AI - Chat with Your PDFs Using Advanced AI',
   description: 'Transform your PDF documents into intelligent conversations. Upload PDFs and chat with our AI assistant powered by Langchain, Pinecone, Gemini API, and Cohere.',
   keywords: 'AI, PDF chat, document analysis, RAG, artificial intelligence, Langchain, Pinecone, Gemini API, Cohere',
-  authors: [{ name: 'DocChat AI Team' }],
+  authors: [{ name: 'Divyanshu' }],
   openGraph: {
     title: 'DocChat AI - Chat with Your PDFs Using Advanced AI',
     description: 'Transform your PDF documents into intelligent conversations with our AI-powered chat system.',
-    url: 'https://docchat.ai',
+    url: 'https://ai-pdf-chatbot-rag-system.vercel.app/',
     siteName: 'DocChat AI',
     images: [
       {

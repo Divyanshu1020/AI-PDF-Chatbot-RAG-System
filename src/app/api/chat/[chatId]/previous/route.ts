@@ -15,6 +15,10 @@ export async function GET(req: NextRequest, { params }: { params: { chatId: stri
 
     const chatMessages = await db.select().from(messages).where(eq(messages.chatId, params.chatId)).orderBy(asc(messages.createdAt));
 
+    if (!chatMessages) {
+      return NextResponse.json({ error: "Chat not found" }, { status: 404 });
+    }
+
     return NextResponse.json(chatMessages, { status: 200 });
 
   } catch (error) {

@@ -1,14 +1,10 @@
-import { db } from "@/db";
-
-import { messages as messagesTable } from "@/db/schema";
+import { saveMessages } from "@/db/queries";
+import { embeddings, model } from "@/lib/AI";
+import { pineconeIndex } from "@/lib/pinecone";
 import { auth } from "@clerk/nextjs/server";
-import { CohereEmbeddings } from "@langchain/cohere";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { PineconeStore } from "@langchain/pinecone";
-import { Pinecone } from "@pinecone-database/pinecone";
 import { NextRequest, NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
 
 const systemPrompt = `
 You are a helpful assistant that answers questions using only the content from a PDF document.
@@ -20,6 +16,39 @@ You are a helpful assistant that answers questions using only the content from a
 - Reference the page number in your answer when relevant.
 `;
 
+async function getContext(chatId: string, content: string) {
+  const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
+    pineconeIndex,
+  });
+
+  const retriever = vectorStore.asRetriever({
+    filter: {
+      chatId: {
+        $eq: chatId,
+      },
+    },
+    k: 3,
+  });
+
+  const retrievedDocs = await retriever.invoke(content);
+  const contextString = retrievedDocs
+    .map((doc) => `Page ${doc.metadata.pageNumber}:\n${doc.pageContent}`)
+    .join("\n\n");
+
+  return { retrievedDocs, contextString };
+}
+
+async function generateAssistantResponse(contextString: string, content: string) {
+  const userMessage = `Context:\n${contextString}\n\n Question: ${content}`;
+  const messages = [
+    new SystemMessage(systemPrompt),
+    new HumanMessage(userMessage),
+  ];
+
+  const response = await model.invoke(messages);
+  return response.content as string;
+}
+
 export async function POST(
   req: NextRequest,
   { params }: { params: { chatId: string } }
@@ -28,55 +57,22 @@ export async function POST(
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   try {
     const { chatId } = params;
     const { content } = await req.json();
 
-    const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-    const pineconeIndex = pc.Index(process.env.PINECONE_INDEX!);
+    const { retrievedDocs, contextString } = await getContext(chatId, content);
+    const assistantResponse = await generateAssistantResponse(
+      contextString,
+      content
+    );
 
-    const embeddings = new CohereEmbeddings({ model: "embed-english-v3.0" });
-
-    // Load existing Pinecone vector store
-    const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-      pineconeIndex,
-    });
-
-    // Perform semantic search
-    const retriever = vectorStore.asRetriever({
-      filter: {
-        chatId: {
-          $eq: chatId,
-        },
-      },
-      k: 3,
-    });
-
-    const retrievedDocs = await retriever.invoke(content);
-
-    const contextString = retrievedDocs.map((doc) => `Page ${doc.metadata.pageNumber}:\n${doc.pageContent}`).join("\n\n");
-
-    const userMessage = `Context:\n${contextString}\n\n Question: ${content}`;
-
-
-
-
-    const model = new ChatGoogleGenerativeAI({
-      model: "gemini-2.0-flash",
-      temperature: 0,
-    });
-
-    const messages = [
-      new SystemMessage(systemPrompt),
-      new HumanMessage(userMessage),
-    ];
-
-    const response = await model.invoke(messages);
-
-    const { userMessageResponse, assistantMessageResponse } =
-      await saveUserMessage(chatId, content, response.content as string);
-
-    console.log(response.content); // Matching documents
+    const { userMessageResponse, assistantMessageResponse } = await saveMessages(
+      chatId,
+      content,
+      assistantResponse
+    );
 
     return NextResponse.json({
       status: 200,
@@ -84,38 +80,14 @@ export async function POST(
         retrievedDocs,
         userMessageResponse,
         assistantMessageResponse,
-        AIResponse: response.content,
+        AIResponse: assistantResponse,
       },
     });
   } catch (error) {
-    console.error("Error fetching chat history:", error);
+    console.error("Error in chat API:", error);
     return NextResponse.json(
-      { error: "Failed to fetch chat history" },
+      { error: "Failed to process chat message" },
       { status: 500 }
     );
   }
-}
-
-async function saveUserMessage(
-  chatId: string,
-  userMessage: string,
-  assistantMessage: string
-) {
-  const userMessageResponse = await db.insert(messagesTable).values({
-    id: uuidv4(),
-    chatId,
-    content: userMessage,
-    role: "user",
-    createdAt: new Date(),
-  });
-
-  const assistantMessageResponse = await db.insert(messagesTable).values({
-    id: uuidv4(),
-    chatId,
-    content: assistantMessage,
-    role: "system",
-    createdAt: new Date(),
-  });
-
-  return { userMessageResponse, assistantMessageResponse };
 }

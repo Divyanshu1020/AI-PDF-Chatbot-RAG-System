@@ -6,6 +6,8 @@
   .text-balance {
     text-wrap: balance;
   }
+
+
 }
 
 
@@ -107,9 +109,6 @@
 
   
 }
-
-
-
 
 
 @layer base {
