@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { db } from '@/db';
 import { chats } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import { rateLimitForUserPreviousChat, } from '@/lib/redis';
 
 export const dynamic = 'force-dynamic';
   
@@ -11,6 +12,11 @@ export async function GET() {
     const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const key = `ratelimit:user-previous-chat:${userId}`;
+    const { success } = await rateLimitForUserPreviousChat.limit(key);
+    if (!success) {
+      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
     }
 
     const userChats = await db.select().from(chats).where(eq(chats.userId, userId));

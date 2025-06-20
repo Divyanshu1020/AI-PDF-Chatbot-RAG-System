@@ -1,6 +1,7 @@
 import { saveMessages } from "@/db/queries";
 import { embeddings, model } from "@/lib/AI";
 import { pineconeIndex } from "@/lib/pinecone";
+import { rateLimitForChatMessages } from "@/lib/redis";
 import { auth } from "@clerk/nextjs/server";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { PineconeStore } from "@langchain/pinecone";
@@ -38,7 +39,10 @@ async function getContext(chatId: string, content: string) {
   return { retrievedDocs, contextString };
 }
 
-async function generateAssistantResponse(contextString: string, content: string) {
+async function generateAssistantResponse(
+  contextString: string,
+  content: string
+) {
   const userMessage = `Context:\n${contextString}\n\n Question: ${content}`;
   const messages = [
     new SystemMessage(systemPrompt),
@@ -62,17 +66,33 @@ export async function POST(
     const { chatId } = params;
     const { content } = await req.json();
 
+    const key = `ratelimit:chat-messages:${userId}`;
+    const { success } = await rateLimitForChatMessages.limit(key);
+
+    if (!success) {
+      const assistantResponse =
+        "Rate limit exceeded. You can send a maximum of 5 messages per day.";
+      const { userMessageResponse, assistantMessageResponse } =
+        await saveMessages(chatId, content, assistantResponse);
+
+      return NextResponse.json({
+        status: 200,
+        data: {
+          userMessageResponse,
+          assistantMessageResponse,
+          AIResponse: assistantResponse,
+        },
+      });
+    }
+
     const { retrievedDocs, contextString } = await getContext(chatId, content);
     const assistantResponse = await generateAssistantResponse(
       contextString,
       content
     );
 
-    const { userMessageResponse, assistantMessageResponse } = await saveMessages(
-      chatId,
-      content,
-      assistantResponse
-    );
+    const { userMessageResponse, assistantMessageResponse } =
+      await saveMessages(chatId, content, assistantResponse);
 
     return NextResponse.json({
       status: 200,

@@ -3,6 +3,7 @@ import { embeddings } from "@/lib/AI";
 import { loadPDF, processDocuments } from "@/lib/doc-processor";
 import { uploadToImageKit } from "@/lib/imagekit";
 import { pineconeIndex } from "@/lib/pinecone";
+import { rateLimitForCreateNewChat } from "@/lib/redis";
 import { auth } from "@clerk/nextjs/server";
 import { PineconeStore } from "@langchain/pinecone";
 import { NextRequest, NextResponse } from "next/server";
@@ -13,7 +14,14 @@ export async function POST(req: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
+  const key = `ratelimit:create-new-chat:${userId}`;
+  const { success } = await rateLimitForCreateNewChat.limit(key);
+  if (!success) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded. You can create a new chat once a day." },
+      { status: 429 }
+    );
+  }
   try {
     const formData = await req.formData();
     const formUserId = formData.get("userId") as string;
