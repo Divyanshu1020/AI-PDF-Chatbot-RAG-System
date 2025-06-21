@@ -79,7 +79,7 @@ export function FeaturesSection() {
           <h2 className="text-3xl sm:text-4xl font-bold  mb-4">
             Powerful Features for Document Intelligence
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Experience the future of document interaction with our advanced AI-powered platform
           </p>
         </motion.div>
@@ -120,6 +120,7 @@ export function FeaturesSection() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
           className="mt-6"
+          id='how-it-works'
         >
           <Card className="h-full bg-muted backdrop-blur-sm shadow-sm hover:shadow-xl transition-all duration-300">
             <CardHeader className="">
