@@ -17,7 +17,6 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import Loader from "../loader";
-import { PdfViewer1 } from "./pdf-viewer1";
 import { PdfViewerMobile } from "./pdf-viewer-mobile";
 
 export interface ChatSession {
@@ -166,7 +165,7 @@ export default function Chat() {
           // <FileUpload onFileUpload={handleFileUpload} />
           <PDFUploadComponent onFileUpload={handleFileUpload} />
         ) : (
-          <PdfViewer1
+          <PdfViewer
             pdfUrl={currentSession?.pdfUrl || ""}
             fileName={currentSession?.pdfName || "document.pdf"}
           />

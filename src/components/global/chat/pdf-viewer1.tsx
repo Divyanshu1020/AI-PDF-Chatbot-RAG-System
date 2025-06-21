@@ -14,7 +14,7 @@ interface PdfViewerProps {
 
 export function PdfViewer1({ pdfUrl, fileName }: PdfViewerProps) {
   const [numPages, setNumPages] = useState<number | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
+  // const [currentPage, setCurrentPage] = useState(1)
 
   const handleDownload = () => {
     const link = document.createElement("a")

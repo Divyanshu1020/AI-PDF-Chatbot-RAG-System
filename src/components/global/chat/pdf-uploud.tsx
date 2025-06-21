@@ -52,7 +52,7 @@ export default function PDFUploadComponent({ onFileUpload }: PDFUploadProps) {
         message: `Uploading ${file.name}...`,
       });
   
-      const response = await axios.post("/api/create-new-chat", formData, {
+       await axios.post("/api/create-new-chat", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -160,7 +160,7 @@ export default function PDFUploadComponent({ onFileUpload }: PDFUploadProps) {
         })
       }
     },
-    [onFileUpload, upload, uploadedFile],
+    [upload, uploadedFile],
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
