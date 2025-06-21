@@ -9,6 +9,15 @@ const useChatMessages = (chatId: string) => {
       return res.json() // returns Message[]
     },
     enabled: !!chatId, 
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+
+    // ✅ Consider fresh for 5 minutes (prevents refetch)
+    staleTime: 1000 * 60 * 5,
+
+    // 🧠 Keep in cache for 10 minutes after unused
+    gcTime: 1000 * 60 * 10,
   })
 }
 

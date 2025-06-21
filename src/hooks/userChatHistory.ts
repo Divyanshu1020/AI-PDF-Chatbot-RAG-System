@@ -12,8 +12,12 @@ const useUserChatHistory = () => {
                 throw new Error('Failed to fetch chat history');
             }
             return response.json();
-        }
+        },
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
     });
+    
     
     return {
         data: data || [],
