@@ -46,10 +46,10 @@ export function Navbar() {
           {/* Logo */}
           <motion.div
             className="flex items-center space-x-2"
-            whileHover={{ scale: 1.05 }}
+            // whileHover={{ scale: 1.05 }}
           >
-            <Link href="/" className="flex items-center cursor-pointer gap-2">
-              <span className="text-xl font-bold">Doc-Chat AI</span>
+            <Link href="/" className="flex items-center cursor-pointer ">
+              <span className="text-xl font-bold">Doc<span className="text-primary">Chat</span>{" "}AI</span>
             </Link>
           </motion.div>
 

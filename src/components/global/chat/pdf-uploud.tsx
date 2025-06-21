@@ -39,39 +39,70 @@ export default function PDFUploadComponent({ onFileUpload }: PDFUploadProps) {
   const { userId } = useAuth();
 
   const upload = useCallback(async (file: File): Promise<void> => {
-    if (!file) return;
+    if (!file || !userId) return;
+  
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("userId", userId?.toString() || "");
-    
+    formData.append("userId", userId);
+  
     try {
-      await axios.post("/api/create-new-chat", formData, {
+      setUploadStatus({
+        status: "uploading",
+        progress: 0,
+        message: `Uploading ${file.name}...`,
+      });
+  
+      const response = await axios.post("/api/create-new-chat", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
             const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            setUploadStatus({
-              status: "uploading",
+            setUploadStatus(prev => ({
+              ...prev,
               progress,
-              message: `Uploading ${file.name}...`,
-            });
+            }));
           }
         },
       });
+  
+      // Handle successful upload
+      setUploadStatus({
+        status: "success",
+        progress: 100,
+        message: "File uploaded successfully!",
+      });
       
+      // Call the parent component's handler
+      onFileUpload(file);
       
+      // Update the uploaded file state
+      // setUploadedFile({
+      //   id: response.data.data.chat.id,
+      //   name: file.name,
+      //   size: file.size,
+      //   url: response.data.data.chat.pdfUrl,
+      //   uploadedAt: new Date(),
+      // });
+  
     } catch (error) {
-      console.error("Error uploading file:", error);
+      let errorMessage = "Failed to upload file. Please try again.";
+      
+      if (axios.isAxiosError(error)) {
+        // Handle API error responses
+        errorMessage = error.response?.data?.error || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+  
       setUploadStatus({
         status: "error",
         progress: 0,
-        message: "Failed to upload file. Please try again.",
+        message: errorMessage,
       });
     }
-    
-  }, [userId])
+  }, [userId, onFileUpload]);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -112,26 +143,15 @@ export default function PDFUploadComponent({ onFileUpload }: PDFUploadProps) {
 
         await upload(file)
 
-        // const newFile: UploadedFile = {
-        //   id: Math.random().toString(36).substr(2, 9),
-        //   name: file.name,
-        //   size: file.size,
-        //   uploadedAt: new Date(),
-        // }
-        
-        // setUploadedFile(newFile)
-        setUploadStatus({
-          status: "success",
-          progress: 100,
-          message: `${file.name} uploaded successfully`,
-        })
+
+
 
         // Reset status after 5 seconds (longer to show disabled message)
         setTimeout(() => {
           setUploadStatus({ status: "idle", progress: 0 })
-        }, 5000)
+        }, 10000)
 
-        onFileUpload(file)
+        
       } catch (error) {
         setUploadStatus({
           status: "error",

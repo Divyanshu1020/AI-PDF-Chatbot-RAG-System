@@ -3,7 +3,6 @@
 import { ChatHistory } from "@/components/global/chat/chat-history";
 import { ChatInterface } from "@/components/global/chat/chat-interface";
 import { PdfViewer } from "@/components/global/chat/pdf-viewer";
-import { Toaster } from "@/components/ui/sonner";
 import { MESSAGES_TYPE } from "@/db/schema";
 import useChatMessages from "@/hooks/useChatMessages";
 import useUserChatHistory from "@/hooks/userChatHistory";
@@ -184,17 +183,32 @@ export default function Chat() {
         />
       </div>
 
-      <Toaster />
+      
     </div>
   )
 
   const renderMobileView = () => (
-    <Tabs defaultValue="pdfUploadViewer" className=" h-[calc(100vh-120px)] mt-[64px] border-t  ">
-      <TabsList>
-        <TabsTrigger value="chatHistory">Chat History</TabsTrigger>
-        <TabsTrigger  value="pdfUploadViewer">PDF Upload/Viewer</TabsTrigger>
-        <TabsTrigger value="chat">Chat</TabsTrigger>
-      </TabsList>
+    <Tabs defaultValue="pdfUploadViewer" className=" h-[calc(100vh-120px)] mt-[64px] border-t rounded-none  ">
+        <TabsList className="bg-transparent border-b rounded-none  px-2">
+    <TabsTrigger
+      value="chatHistory"
+      className="data-[state=active]:border-b-2  border-primary   rounded-none px-4 py-2 font-medium transition"
+    >
+      Chat History
+    </TabsTrigger>
+    <TabsTrigger
+      value="pdfUploadViewer"
+      className="data-[state=active]:border-b-2  border-primary   rounded-none px-4 py-2 font-medium transition"
+    >
+      PDF Upload/Viewer
+    </TabsTrigger>
+    <TabsTrigger
+      value="chat"
+      className="data-[state=active]:border-b-2 shadow-none  border-primary   rounded-none px-4 py-2 font-medium transition"
+    >
+      Chat
+    </TabsTrigger>
+  </TabsList>
       <TabsContent value="chatHistory" className="h-full">
         <ChatHistory
           sessions={chatSessions}
@@ -237,6 +251,6 @@ export default function Chat() {
 
   return <>
   {isMobile ? renderMobileView() : renderDesktopView()}
-  <Toaster />
+
 </>
 }
