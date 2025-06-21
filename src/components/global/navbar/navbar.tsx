@@ -38,7 +38,7 @@ export function Navbar() {
       className={` fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? " backdrop-blur-md shadow-lg border-b border-white/20"
-          : "bg-transparent"
+          : "bg-transparent border-b"
       }`}
     >
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -174,9 +174,7 @@ export function Navbar() {
                     <div className="border-t border-border pt-4 mt-4">
                       {isSignedIn ? (
                         <div className="flex flex-col space-y-4">
-                          {!pathname.startsWith("/dashboard") && <Button variant="outline" asChild className="w-full">
-                            <Link href="/dashboard">Dashboard</Link>
-                          </Button>}
+                        
                           <a href="https://github.com/Divyanshu1020/AI-PDF-Chatbot-RAG-System" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between">
                             <span className="text-sm font-medium">Github</span>
                             <Github />
@@ -186,17 +184,21 @@ export function Navbar() {
                             <UserButton afterSignOutUrl="/" />
                           </div>
 
+                          {!pathname.startsWith("/dashboard") && <Button variant="outline" asChild className="w-full mt-auto">
+                            <Link href="/dashboard">Dashboard</Link>
+                          </Button>}
+
 
                         </div>
                       ) : (
                         <div className="flex flex-col space-y-3">
                           <SignInButton mode="modal">
-                            <Button variant="outline" className="w-full">
+                            <Button variant="outline" className="w-full bg-muted">
                               Sign In
                             </Button>
                           </SignInButton>
                           <SignUpButton mode="modal">
-                            <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+                            <Button className="w-full ">
                               Sign Up
                             </Button>
                           </SignUpButton>
