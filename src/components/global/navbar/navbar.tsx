@@ -2,16 +2,23 @@
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
-import {  Github, Menu, X } from "lucide-react";
+import { Github, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isSignedIn, isLoaded } = useUser();
 
   const pathname = usePathname();
@@ -122,81 +129,86 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-            </Button>
-          </div>
-        </div>
 
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-white/95 backdrop-blur-md border-t border-white/20 py-4"
-          >
-            <div className="flex flex-col space-y-4">
-              <Link
-                href="#features"
-                className="text-gray-700 hover:text-blue-600 transition-colors px-4 py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Features
-              </Link>
-              <Link
-                href="#how-it-works"
-                className="text-gray-700 hover:text-blue-600 transition-colors px-4 py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                How it Works
-              </Link>
-              <Link
-                href="#tech-stack"
-                className="text-gray-700 hover:text-blue-600 transition-colors px-4 py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Technology
-              </Link>
 
-              {isLoaded && (
-                <div className="border-t border-gray-200 pt-4 px-4">
-                  {isSignedIn ? (
-                    <div className="flex items-center justify-between">
-                      <Button variant="outline" asChild className="flex-1 mr-2">
-                        <Link href="/dashboard">Dashboard</Link>
-                      </Button>
-                      <UserButton />
-                    </div>
-                  ) : (
-                    <div className="flex flex-col space-y-2">
-                      <SignInButton mode="modal">
-                        <Button variant="outline" className="w-full">
-                          Sign In
-                        </Button>
-                      </SignInButton>
-                      <SignUpButton mode="modal">
-                        <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
-                          Sign Up
-                        </Button>
-                      </SignUpButton>
+          {/* Mobile menu button with Sheet */}
+          <div className="md:hidden ml-auto">
+          <ModeToggle />       
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0">
+                <SheetHeader className="p-6 pb-2 text-left">
+                  <SheetTitle className="text-xl font-bold">Menu</SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col space-y-4 p-6 pt-2">
+                  <SheetClose asChild>
+                    <Link
+                      href="#features"
+                      className="text-foreground hover:text-primary transition-colors py-2 text-sm font-medium"
+                    >
+                      Features
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link
+                      href="#how-it-works"
+                      className="text-foreground hover:text-primary transition-colors py-2 text-sm font-medium"
+                    >
+                      How it Works
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link
+                      href="#tech-stack"
+                      className="text-foreground hover:text-primary transition-colors py-2 text-sm font-medium"
+                    >
+                      Technology
+                    </Link>
+                  </SheetClose>
+
+                  {isLoaded && (
+                    <div className="border-t border-border pt-4 mt-4">
+                      {isSignedIn ? (
+                        <div className="flex flex-col space-y-4">
+                          {!pathname.startsWith("/dashboard") && <Button variant="outline" asChild className="w-full">
+                            <Link href="/dashboard">Dashboard</Link>
+                          </Button>}
+                          <a href="https://github.com/Divyanshu1020/AI-PDF-Chatbot-RAG-System" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between">
+                            <span className="text-sm font-medium">Github</span>
+                            <Github />
+                          </a>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium">Account</span>
+                            <UserButton afterSignOutUrl="/" />
+                          </div>
+
+
+                        </div>
+                      ) : (
+                        <div className="flex flex-col space-y-3">
+                          <SignInButton mode="modal">
+                            <Button variant="outline" className="w-full">
+                              Sign In
+                            </Button>
+                          </SignInButton>
+                          <SignUpButton mode="modal">
+                            <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+                              Sign Up
+                            </Button>
+                          </SignUpButton>
+                        </div>
+                      )}
                     </div>
                   )}
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
       </div>
     </motion.nav>
   );

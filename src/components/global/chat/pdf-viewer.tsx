@@ -2,7 +2,6 @@
 
 import { FileText, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useEffect } from "react"
 
 interface PdfViewerProps {
   pdfUrl: string
@@ -16,22 +15,7 @@ export function PdfViewer({ pdfUrl, fileName }: PdfViewerProps) {
     link.download = fileName
     link.click()
   }
-  useEffect(() => {
-    const iframe = document.getElementById("pdf-viewer") as HTMLIFrameElement | null
-    
-    if (iframe) {
-      console.log("iframe", iframe)
-
-      iframe.onload = () => {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
-        console.log("iframeDoc", iframeDoc)
   
-        if (iframeDoc?.body) {
-          iframeDoc.body.style.backgroundColor = "var(--background)"
-        }
-      }
-    }
-  }, [])
 
   return (
     <div className="flex flex-col h-full">
