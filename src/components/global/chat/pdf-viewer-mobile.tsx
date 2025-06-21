@@ -8,7 +8,7 @@ interface PdfViewerProps {
   fileName: string;
 }
 
-export function PdfViewer({ pdfUrl, fileName }: PdfViewerProps) {
+export function PdfViewerMobile({ pdfUrl, fileName }: PdfViewerProps) {
   const handleDownload = () => {
     const link = document.createElement("a");
     link.href = pdfUrl;
@@ -38,7 +38,9 @@ export function PdfViewer({ pdfUrl, fileName }: PdfViewerProps) {
       {/* PDF Iframe */}
       <div className="flex-1 overflow-hidden ">
         <iframe
-          src={pdfUrl}
+          src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+            pdfUrl
+          )}`}
           style={{ width: "100%", height: "100vh", border: "none" }}
           allowFullScreen
         />
