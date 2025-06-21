@@ -69,20 +69,22 @@ export async function POST(
     const key = `ratelimit:chat-messages:${userId}`;
     const { success } = await rateLimitForChatMessages.limit(key);
 
-    if (!success) {
-      const assistantResponse =
-        "Rate limit exceeded. You can send a maximum of 5 messages per day.";
-      const { userMessageResponse, assistantMessageResponse } =
-        await saveMessages(chatId, content, assistantResponse);
+    if (process.env.NODE_ENV === "production") {
+      if (!success) {
+        const assistantResponse =
+          "Rate limit exceeded. You can send a maximum of 5 messages per day.";
+        const { userMessageResponse, assistantMessageResponse } =
+          await saveMessages(chatId, content, assistantResponse);
 
-      return NextResponse.json({
-        status: 200,
-        data: {
-          userMessageResponse,
-          assistantMessageResponse,
-          AIResponse: assistantResponse,
-        },
-      });
+        return NextResponse.json({
+          status: 200,
+          data: {
+            userMessageResponse,
+            assistantMessageResponse,
+            AIResponse: assistantResponse,
+          },
+        });
+      }
     }
 
     const { retrievedDocs, contextString } = await getContext(chatId, content);

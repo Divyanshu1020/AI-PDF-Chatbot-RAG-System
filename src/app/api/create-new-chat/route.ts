@@ -14,13 +14,15 @@ export async function POST(req: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const key = `ratelimit:create-new-chat:${userId}`;
-  const { success } = await rateLimitForCreateNewChat.limit(key);
-  if (!success) {
-    return NextResponse.json(
-      { error: "Rate limit exceeded. You can create a new chat once a day." },
-      { status: 429 }
-    );
+  if (process.env.NODE_ENV === "production") {
+    const key = `ratelimit:create-new-chat:${userId}`;
+    const { success } = await rateLimitForCreateNewChat.limit(key);
+    if (!success) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. You can create a new chat once a day." },
+        { status: 429 }
+      );
+    }
   }
   try {
     const formData = await req.formData();
